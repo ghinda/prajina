@@ -1,0 +1,13 @@
+# app
+data/
+private.json
+
+# node
+node_modules/
+npm-debug.log
+
+# editor
+.editorconfig
+.kateproject
+.kateproject.d
+*.kate-swp
