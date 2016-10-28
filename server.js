@@ -23,4 +23,4 @@ app.use('/api/', api)
 var resolve = require('./routes/resolve')(linkService)
 app.use('/', resolve)
 
-module.exports = app.listen(config.port)
+module.exports = app.listen(config.port, config.ip)
