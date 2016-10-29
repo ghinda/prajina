@@ -5,21 +5,23 @@ var url = require('url')
 var bs58 = require('base58')
 var util = require('./util')
 
+var config = require('./config/config')
+
+function checkHostname (fullUrl) {
+  var parsedUrl = url.parse(fullUrl)
+
+  if (parsedUrl.hostname !== config.linkHostname) {
+    return false
+  }
+
+  return true
+}
+
 function Service (db, configPrivate) {
   var count = 0
   db.count({}, function (err, c) {
     count = c
   })
-
-  function checkHostname (fullUrl) {
-    var parsedUrl = url.parse(fullUrl)
-
-    if (parsedUrl.hostname !== configPrivate.hostname) {
-      return false
-    }
-
-    return true
-  }
 
   function create (data, callback) {
     data = util.extend(data, {
@@ -29,6 +31,7 @@ function Service (db, configPrivate) {
     // restrict by hostname
     if (!checkHostname(data.long_url)) {
       return callback({
+        status: 403,
         error: 'Hostname doesn\'t match.'
       })
     }
@@ -59,6 +62,7 @@ function Service (db, configPrivate) {
     db.findOne({ short_url: data.short_url }, function (err, link) {
       if (err || !link) {
         return callback({
+          status: 403,
           error: 'Couldn\'t find short url.'
         })
       }
@@ -66,6 +70,7 @@ function Service (db, configPrivate) {
       // make sure session matches
       if (data.session !== link.session) {
         return callback({
+          status: 403,
           error: 'Session doesn\'t match.'
         })
       }
@@ -73,6 +78,7 @@ function Service (db, configPrivate) {
       // restrict url
       if (!checkHostname(data.long_url)) {
         return callback({
+          status: 403,
           error: 'Hostname doesn\'t match.'
         })
       }
@@ -101,6 +107,7 @@ function Service (db, configPrivate) {
     db.findOne({ short_url: data.short_url }, function (err, link) {
       if (err || !link) {
         return callback({
+          status: 403,
           error: 'Couldn\'t find short url.'
         })
       }

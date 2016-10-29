@@ -11,7 +11,7 @@ function Api (service) {
     // create link
     service.create(req.body, function (err, link) {
       if (err) {
-        return res.status(500).json(err)
+        return res.status(err.status || 500).json(err)
       }
 
       res.json(link)
@@ -22,7 +22,7 @@ function Api (service) {
     // update link
     service.update(req.body, function (err, link) {
       if (err) {
-        return res.status(500).json(err)
+        return res.status(err.status || 500).json(err)
       }
 
       res.json(link)

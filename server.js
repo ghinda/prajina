@@ -2,10 +2,13 @@
  */
 
 var config = require('./config/config')
-var configPrivate = require('./config/private.json')
 
 var express = require('express')
 var app = express()
+
+var cors = require('cors')
+
+app.use(cors())
 
 var Nedb = require('nedb')
 var links = new Nedb({
@@ -13,7 +16,7 @@ var links = new Nedb({
   autoload: true
 })
 
-var linkService = require('./link-service')(links, configPrivate)
+var linkService = require('./link-service')(links)
 
 // api server
 var api = require('./routes/api')(linkService)

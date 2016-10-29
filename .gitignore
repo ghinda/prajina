@@ -1,6 +1,5 @@
 # app
 data/
-private.json
 
 # node
 node_modules/

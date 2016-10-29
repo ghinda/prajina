@@ -29,6 +29,14 @@ function getIp (env) {
   return '127.0.0.1'
 }
 
+function getLinkHostname (env) {
+  if (env !== 'local') {
+    return 'www.siloz.io'
+  }
+
+  return 'localhost'
+}
+
 config.env = getEnvironment()
 
 config.dirData = 'data'
@@ -37,5 +45,7 @@ config.dbLinks = config.dirData + '/links.json'
 
 config.port = getPort(config.env)
 config.ip = getIp(config.env)
+
+config.linkHostname = getLinkHostname(config.env)
 
 module.exports = config

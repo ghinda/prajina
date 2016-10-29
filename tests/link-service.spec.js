@@ -9,7 +9,7 @@ var db = new Nedb({
   autoload: true
 })
 
-var linkService = require('../link-service')(db, { hostname: 'www.siloz.io' })
+var linkService = require('../link-service')(db)
 
 test('create link', function (t) {
   t.plan(3)
