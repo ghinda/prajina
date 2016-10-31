@@ -16,27 +16,27 @@ router.use(cors({
 function Api (service) {
   router.post('/', function (req, res) {
     // create link
-    service.create(req.body, function (err, data) {
+    service.create(req.body, function (err, link) {
       if (err) {
         return res.status(err.status || 500).json(err)
       }
 
       res.json({
-        short_url: data.link.short_url,
-        token: data.session.token
+        short_url: link.short_url,
+        token: link.token
       })
     })
   })
 
   router.put('/', function (req, res) {
     // update link
-    service.update(req.body, function (err, data) {
+    service.update(req.body, function (err, link) {
       if (err) {
         return res.status(err.status || 500).json(err)
       }
 
       res.json({
-        short_url: data.link.short_url
+        short_url: link.short_url
       })
     })
   })
