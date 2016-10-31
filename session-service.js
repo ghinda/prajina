@@ -18,10 +18,23 @@ function Session () {
 
     // generate token
     var session = {
-      token: util.guid()
+      token: util.guid(),
+      updated_at: new Date()
     }
 
     db.insert(session, callback)
+  }
+
+  function update (data, callback) {
+    db.update(data, {
+      $set: {
+        updated_at: new Date()
+      }
+    }, {
+      returnUpdatedDocs: true
+    }, function (err, num, docs) {
+      callback(err, docs)
+    })
   }
 
   function find (data, callback) {
@@ -39,6 +52,7 @@ function Session () {
 
   return {
     create: create,
+    update: update,
     find: find
   }
 }

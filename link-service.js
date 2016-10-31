@@ -112,18 +112,27 @@ function Service (db) {
           })
         }
 
-        // update long_url
-        db.update({
-          _id: link._id
-        }, {
-          $set: {
-            long_url: data.long_url,
-            updated_at: new Date()
+        // update session
+        sessionService.update({
+          _id: link.session
+        }, function (err) {
+          if (err) {
+            return callback(err)
           }
-        }, {
-          returnUpdatedDocs: true
-        }, function (err, num, docs) {
-          callback(err, docs)
+
+          // update long_url
+          db.update({
+            _id: link._id
+          }, {
+            $set: {
+              long_url: data.long_url,
+              updated_at: new Date()
+            }
+          }, {
+            returnUpdatedDocs: true
+          }, function (err, num, docs) {
+            callback(err, docs)
+          })
         })
       })
     })
