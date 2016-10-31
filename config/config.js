@@ -40,6 +40,8 @@ function getLinkHostname (env) {
 function getDataDir (env) {
   if (env === 'test') {
     return 'tests/data'
+  } else if (env !== 'local') {
+    return process.env.OPENSHIFT_DATA_DIR
   }
 
   return 'data'
