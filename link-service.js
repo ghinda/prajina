@@ -7,6 +7,8 @@ var util = require('./util')
 
 var config = require('./config/config')
 
+var sessionService = require('./session-service')
+
 function checkHostname (fullUrl) {
   var parsedUrl = url.parse(fullUrl)
 
@@ -17,9 +19,11 @@ function checkHostname (fullUrl) {
   return true
 }
 
-function Service (db, configPrivate) {
+function Service (db) {
   var count = 0
   db.count({}, function (err, c) {
+    if (err) {}
+
     count = c
   })
 
@@ -38,40 +42,49 @@ function Service (db, configPrivate) {
 
     var uid = count++
 
-    // if no session, generate one
-    var session = data.session || util.guid()
-
     var link = {
       long_url: data.long_url,
       short_url: bs58.encode(uid),
-      created_at: new Date(),
-      updated_at: new Date(),
-      session: session
+      updated_at: new Date()
     }
 
-    db.insert(link, callback)
+    // create session and return token
+    sessionService.create({}, function (err, session) {
+      if (err) {
+        return callback(err)
+      }
+
+      link.session = session._id
+
+      db.insert(link, function (err, link) {
+        if (err) {
+          return callback(err)
+        }
+
+        // add token to link
+        link.token = session.token
+
+        callback(err, link)
+      })
+    })
   }
 
   function update (data, callback) {
     data = util.extend(data, {
       short_url: '',
       long_url: '',
-      session: ''
+      token: ''
     })
 
     db.findOne({ short_url: data.short_url }, function (err, link) {
-      if (err || !link) {
+      if (err) {
+        return callback(err)
+      }
+
+      if (!link) {
         return callback({
           status: 403,
           error: 'Couldn\'t find short url.'
-        })
-      }
-
-      // make sure session matches
-      if (data.session !== link.session) {
-        return callback({
-          status: 403,
-          error: 'Session doesn\'t match.'
         })
       }
 
@@ -83,18 +96,35 @@ function Service (db, configPrivate) {
         })
       }
 
-      // update long_url
-      db.update({
-        _id: link._id
-      }, {
-        $set: {
-          long_url: data.long_url,
-          updated_at: new Date()
+      // TODO find session
+      sessionService.find({
+        _id: link.session
+      }, function (err, session) {
+        if (err) {
+          return callback(err)
         }
-      }, {
-        returnUpdatedDocs: true
-      }, function (err, num, docs) {
-        callback(err, docs)
+
+        // make sure session matches
+        if (data.token !== session.token) {
+          return callback({
+            status: 403,
+            error: 'Session doesn\'t match.'
+          })
+        }
+
+        // update long_url
+        db.update({
+          _id: link._id
+        }, {
+          $set: {
+            long_url: data.long_url,
+            updated_at: new Date()
+          }
+        }, {
+          returnUpdatedDocs: true
+        }, function (err, num, docs) {
+          callback(err, docs)
+        })
       })
     })
   }

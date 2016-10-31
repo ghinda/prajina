@@ -6,10 +6,6 @@ var config = require('./config/config')
 var express = require('express')
 var app = express()
 
-var cors = require('cors')
-
-app.use(cors())
-
 var Nedb = require('nedb')
 var links = new Nedb({
   filename: config.dbLinks,

@@ -12,32 +12,21 @@ var db = new Nedb({
 var linkService = require('../link-service')(db)
 
 test('create link', function (t) {
-  t.plan(3)
+  t.plan(2)
 
   linkService.create({
-    long_url: '',
+    long_url: ''
   }, function (err, res) {
     t.ok(err, 'should throw hostname error')
   })
 
   linkService.create({
     long_url: 'http://www.siloz.io/1'
-  }, function (err, res) {
+  }, function (e, res) {
     db.findOne({
       long_url: 'http://www.siloz.io/1'
-    }, function (err, link) {
-      t.equal(link.long_url, 'http://www.siloz.io/1', 'should create link without session')
-    })
-  })
-
-  linkService.create({
-    long_url: 'http://www.siloz.io/2',
-    session: '1234'
-  }, function (err, res) {
-    db.findOne({
-      long_url: 'http://www.siloz.io/2'
-    }, function (err, link) {
-      t.equal(link.session, '1234', 'should create link with session')
+    }, function (e, link) {
+      t.equal(link.long_url, 'http://www.siloz.io/1', 'should create link')
     })
   })
 })
@@ -46,27 +35,25 @@ test('update link', function (t) {
   t.plan(2)
 
   linkService.create({
-    long_url: 'http://www.siloz.io/3',
-    session: '1234'
-  }, function (err, link) {
+    long_url: 'http://www.siloz.io/3'
+  }, function (e, link) {
     linkService.update({
       short_url: link.short_url,
       long_url: 'http://www.siloz.io/4',
-      session: '123'
+      token: '123'
     }, function (err, res) {
       t.ok(err, 'should throw session error')
     })
   })
 
   linkService.create({
-    long_url: 'http://www.siloz.io/3',
-    session: '1234'
-  }, function (err, link) {
+    long_url: 'http://www.siloz.io/3'
+  }, function (e, link) {
     linkService.update({
       short_url: link.short_url,
-      session: link.session,
+      token: link.token,
       long_url: 'http://www.siloz.io/4'
-    }, function (err, res) {
+    }, function (e, res) {
       t.equal(res.long_url, 'http://www.siloz.io/4', 'should update long_url')
     })
   })
@@ -77,7 +64,7 @@ test('find link', function (t) {
 
   linkService.create({
     long_url: 'http://www.siloz.io/5'
-  }, function (err, link) {
+  }, function (e, link) {
     linkService.find({
       short_url: '123'
     }, function (err, res) {
@@ -87,10 +74,10 @@ test('find link', function (t) {
 
   linkService.create({
     long_url: 'http://www.siloz.io/5'
-  }, function (err, link) {
+  }, function (e, link) {
     linkService.find({
       short_url: link.short_url
-    }, function (err, res) {
+    }, function (e, res) {
       t.equal(res.long_url, 'http://www.siloz.io/5', 'should find link')
     })
   })

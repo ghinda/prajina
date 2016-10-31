@@ -42,10 +42,16 @@ config.env = getEnvironment()
 config.dirData = 'data'
 
 config.dbLinks = config.dirData + '/links.json'
+config.dbSession = config.dirData + '/session.json'
 
 config.port = getPort(config.env)
 config.ip = getIp(config.env)
 
 config.linkHostname = getLinkHostname(config.env)
+
+config.corsWhitelist = [
+  'http://localhost',
+  'http://www.siloz.io'
+]
 
 module.exports = config
