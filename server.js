@@ -6,13 +6,7 @@ var config = require('./config/config')
 var express = require('express')
 var app = express()
 
-var Nedb = require('nedb')
-var links = new Nedb({
-  filename: config.dbLinks,
-  autoload: true
-})
-
-var linkService = require('./link-service')(links)
+var linkService = require('./link-service')
 
 // api server
 var api = require('./routes/api')(linkService)

@@ -7,7 +7,7 @@ var config = {}
 function getEnvironment () {
   var nodeEnv = process.env.OPENSHIFT_APP_NAME
   if (typeof nodeEnv !== 'undefined') {
-    return nodeEnv
+    return nodeEnv.toLowerCase()
   }
 
   return 'local'
@@ -37,9 +37,25 @@ function getLinkHostname (env) {
   return 'localhost'
 }
 
+function getDataDir (env) {
+  if (env === 'test') {
+    return 'tests/data'
+  }
+
+  return 'data'
+}
+
+function getCorsWhitelist (env) {
+  if (env !== 'local') {
+    return 'http://localhost'
+  }
+
+  return 'http://www.siloz.io'
+}
+
 config.env = getEnvironment()
 
-config.dirData = 'data'
+config.dirData = getDataDir(config.env)
 
 config.dbLinks = config.dirData + '/links.json'
 config.dbSession = config.dirData + '/session.json'
@@ -49,9 +65,6 @@ config.ip = getIp(config.env)
 
 config.linkHostname = getLinkHostname(config.env)
 
-config.corsWhitelist = [
-  'http://localhost',
-  'http://www.siloz.io'
-]
+config.corsWhitelist = getCorsWhitelist(config.env)
 
 module.exports = config

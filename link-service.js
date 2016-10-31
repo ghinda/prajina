@@ -6,6 +6,11 @@ var bs58 = require('base58')
 var util = require('./util')
 
 var config = require('./config/config')
+var Nedb = require('nedb')
+var db = new Nedb({
+  filename: config.dbLinks,
+  autoload: true
+})
 
 var sessionService = require('./session-service')
 
@@ -19,7 +24,7 @@ function checkHostname (fullUrl) {
   return true
 }
 
-function Service (db) {
+function Service () {
   var count = 0
   db.count({}, function (err, c) {
     if (err) {}
@@ -162,4 +167,4 @@ function Service (db) {
   }
 }
 
-module.exports = Service
+module.exports = Service()

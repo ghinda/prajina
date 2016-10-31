@@ -2,14 +2,7 @@
  */
 
 var test = require('tape')
-var Nedb = require('nedb')
-var config = require('../config/config')
-var db = new Nedb({
-  filename: config.dbLinks + '.test',
-  autoload: true
-})
-
-var linkService = require('../link-service')(db)
+var linkService = require('../link-service')
 
 test('create link', function (t) {
   t.plan(2)
@@ -23,11 +16,7 @@ test('create link', function (t) {
   linkService.create({
     long_url: 'http://www.siloz.io/1'
   }, function (e, res) {
-    db.findOne({
-      long_url: 'http://www.siloz.io/1'
-    }, function (e, link) {
-      t.equal(link.long_url, 'http://www.siloz.io/1', 'should create link')
-    })
+    t.equal(res.long_url, 'http://www.siloz.io/1', 'should create link')
   })
 })
 
