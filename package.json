@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server --ignore data/",
-    "test": "standard && export OPENSHIFT_APP_NAME=test && tape tests/**/*.spec.js"
+    "test": "standard && export OPENSHIFT_APP_NAME=test && tape tests/**/*.spec.js",
+    "start": "forever stopall && forever start server.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "express": "^4.14.0",
+    "forever": "^0.15.2",
     "nedb": "^1.8.0"
   },
   "devDependencies": {

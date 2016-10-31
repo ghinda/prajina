@@ -15,7 +15,7 @@ function getEnvironment () {
 
 function getPort (env) {
   if (env !== 'local') {
-    return process.env.OPENSHIFT_NODEJS_PORT
+    return process.env.NODE_PORT
   }
 
   return 3000
@@ -23,7 +23,7 @@ function getPort (env) {
 
 function getIp (env) {
   if (env !== 'local') {
-    return process.env.OPENSHIFT_NODEJS_IP
+    return process.env.NODE_IP
   }
 
   return '127.0.0.1'
