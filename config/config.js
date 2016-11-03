@@ -49,7 +49,7 @@ function getDataDir (env) {
 
 function getCorsWhitelist (env) {
   if (env !== 'local') {
-    return 'http://www.siloz.io'
+    return 'https://www.siloz.io'
   }
 
   return 'http://localhost:9000'
