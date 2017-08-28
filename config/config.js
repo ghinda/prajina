@@ -5,7 +5,7 @@ var config = {}
 
 // detect environment
 function getEnvironment () {
-  var nodeEnv = process.env.OPENSHIFT_APP_NAME
+  var nodeEnv = process.env.NODE_ENV
   if (typeof nodeEnv !== 'undefined') {
     return nodeEnv.toLowerCase()
   }
@@ -15,7 +15,7 @@ function getEnvironment () {
 
 function getPort (env) {
   if (env !== 'local') {
-    return process.env.NODE_PORT
+    return 8080
   }
 
   return 3000
@@ -41,7 +41,7 @@ function getDataDir (env) {
   if (env === 'test') {
     return 'tests/data'
   } else if (env !== 'local') {
-    return process.env.OPENSHIFT_DATA_DIR
+    return process.env.DATA_DIR
   }
 
   return 'data'
