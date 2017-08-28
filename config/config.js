@@ -57,6 +57,8 @@ function getCorsWhitelist (env) {
 
 config.env = getEnvironment()
 
+console.log(config.env)
+
 config.dirData = getDataDir(config.env)
 
 config.dbLinks = config.dirData + '/links.json'
