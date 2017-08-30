@@ -26,4 +26,6 @@ app.get('/', function (req, res) {
   res.send()
 })
 
+console.log(config)
+
 module.exports = app.listen(config.port, config.ip)
