@@ -23,7 +23,7 @@ function getPort (env) {
 
 function getIp (env) {
   if (env !== 'local') {
-    return '127.0.0.1'
+    return 'localhost'
   }
 
   return '127.0.0.1'
