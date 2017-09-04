@@ -1,8 +1,6 @@
 /* prajina
  */
 
-var cmp = require('config-multipaas')()
-
 var config = {}
 
 // detect environment
@@ -17,7 +15,7 @@ function getEnvironment () {
 
 function getPort (env) {
   if (env !== 'local') {
-    return cmp.get('PORT')
+    return 8080
   }
 
   return 3000
@@ -25,7 +23,7 @@ function getPort (env) {
 
 function getIp (env) {
   if (env !== 'local') {
-    return cmp.get('IP')
+    return '127.0.0.1'
   }
 
   return '127.0.0.1'

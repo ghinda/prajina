@@ -22,7 +22,6 @@
   "dependencies": {
     "base58": "^0.1.0",
     "body-parser": "^1.15.2",
-    "config-multipaas": "^0.2.2",
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "nedb": "^1.8.0"
