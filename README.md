@@ -6,5 +6,5 @@ Prajină is a micro url shortener for [siloz.io](https://www.siloz.io/).
 
 ```
 npm install
-npm run dev
+npm start
 ```
