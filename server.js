@@ -10,7 +10,7 @@ var linkService = require('./link-service')
 
 // static
 if (config.dirStatic) {
-  app.use(express.static(config.dirStatic))
+  app.use(express.static(config.dirStatic, {dotfiles:'allow'}))
 }
 
 // api server
