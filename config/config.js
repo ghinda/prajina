@@ -56,11 +56,7 @@ function getCorsWhitelist (env) {
 }
 
 function getStaticDir (env) {
-  if (env === 'production') {
-    return '../public'
-  }
-
-  return
+  return process.env.STATIC_DIR
 }
 
 config.env = getEnvironment()
