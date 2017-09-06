@@ -55,9 +55,18 @@ function getCorsWhitelist (env) {
   return 'http://localhost:9000'
 }
 
+function getStaticDir (env) {
+  if (env === 'production') {
+    return '../public'
+  }
+
+  return
+}
+
 config.env = getEnvironment()
 
 config.dirData = getDataDir(config.env)
+config.dirStatic = getStaticDir(config.env)
 
 config.dbLinks = config.dirData + '/links.json'
 config.dbSession = config.dirData + '/session.json'

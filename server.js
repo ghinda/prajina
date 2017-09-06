@@ -8,6 +8,11 @@ var app = express()
 
 var linkService = require('./link-service')
 
+// static
+if (config.dirStatic) {
+  app.use(express.static(config.dirStatic))
+}
+
 // api server
 var api = require('./routes/api')(linkService)
 app.use('/api/', api)
